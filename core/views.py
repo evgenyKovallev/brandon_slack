@@ -2,6 +2,7 @@ from rest_framework import views
 from rest_framework.response import Response
 from . import tasks, models
 from .queue import channel
+from . import validators
 from core.serializers import serializers
 import json
 
@@ -17,7 +18,7 @@ class CreateWorkspaceView(views.APIView):
             email.unused = False
             email.save()
             tasks.create_workspace.delay(email, workspace)
-            return Response(status=200)
+            return Response({'email': email.email}, 200)
         else:
             return Response({'message': 'Parameter workspace not found in request'}, 400)
 
@@ -31,8 +32,9 @@ class AddVerificationCodeView(views.APIView):
             instance = models.Email.objects.get(email=email)
             instance.code = code
             instance.save()
-            channel.basic_publish(exchange='', routing_key='slack',
-                                  body=json.dumps({email: code}))
+            # TODO: rabbit queue
+            # channel.basic_publish(exchange='', routing_key='email',
+            #                       body=json.dumps({email: code}))
         return Response(status=200)
 
 
@@ -41,10 +43,12 @@ class EmailView(views.APIView):
     def get(self):
         emails = models.Email.objects.all()
         serializer = serializers.EmailSerializer(emails, many=True)
-        return Response({'emails': serializer.data})
+        return Response({'emails': serializer.data}, 200)
 
     def post(self, request):
-        errors =[]
+        if not validators.validate_email_post(request.data):
+            return Response({'message': 'Invalid required parameters'}, 400)
+        errors = []
         for email in request.data.get('emails'):
             try:
                 models.Email.objects.create(email=email, status='new')
@@ -54,4 +58,3 @@ class EmailView(views.APIView):
             return Response({'message': 'Emails have been added but these emails already exist', 'emails': errors}, 400)
         else:
             return Response(status=200)
-
