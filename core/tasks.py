@@ -1,4 +1,4 @@
-from brandon_slack.celery import app
+from brandon_slack import celery
 from brandon_slack.settings import DRIVER_LOCATION, URL_CREATE, TIME_WAIT
 
 from selenium import webdriver
@@ -7,11 +7,10 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 
-import time
 import random
 
 
-@app.task
+@celery.app.task
 def create_workspace(email, workspace_name):
 
     def submit_code(code):

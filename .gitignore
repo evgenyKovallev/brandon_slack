@@ -1,0 +1,6 @@
+.idea
+.git
+venv
+*.pyc
+*.sqlite3
+tmp.py

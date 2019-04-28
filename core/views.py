@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from . import tasks, models
 from .queue import channel
 from . import validators
-from core.serializers import serializers
+from .serializers import serializers
 import json
 
 

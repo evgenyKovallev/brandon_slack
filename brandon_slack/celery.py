@@ -1,7 +1,7 @@
 import os
 from celery import Celery
 
-from brandon_slack import settings
+from . import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'brandon_slack.settings')
 
