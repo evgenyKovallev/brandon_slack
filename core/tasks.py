@@ -11,7 +11,7 @@ import random
 
 
 @celery.app.task
-def create_workspace(email, workspace_name):
+def create_workspace(email):
 
     def submit_code(code):
         input_fields = browser.find_elements_by_class_name('inline_input')

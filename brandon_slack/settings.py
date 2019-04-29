@@ -133,8 +133,14 @@ URL_CREATE = "https://slack.com/create"
 TIME_WAIT = 30
 DRIVER_LOCATION = r'C:\selenium\webdriver\chromedriver.exe'
 
+# CSV file
+
+FILE_NAME_CSV = "emails.csv"
+
 # Celery
 CELERY_BROKER_URL = 'amqp://localhost'
 
 # Broker
 BROKER_HOST = 'localhost'
+
+
