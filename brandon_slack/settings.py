@@ -131,7 +131,10 @@ STATIC_URL = '/static/'
 # Selenium
 URL_CREATE = "https://slack.com/create"
 TIME_WAIT = 30
+TIME_MAX_WAIT_FOR_BROWSER = 600
+TIME_DELTA = 10
 DRIVER_LOCATION = r'C:\selenium\webdriver\chromedriver.exe'
+
 
 # CSV file
 
